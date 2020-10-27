@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="..\static\bootstrap-4.5.3-dist\css\bootstrap.min.css"/>
+    <title>新增書籍</title>
+</head>
+<body>
+  <header class="masthead mb-auto cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="inner">
+      <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link active" href="list">藏書清單</a>
+        <a class="nav-link" href="addpage">新增書籍</a>
+      </nav>
+    </div>
+  </header>
+<main role="main">
+
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1>書本查詢</h1>
+      <form action="list" method="POST">{% csrf_token %}
+        　書名：<input type="text" class="form-control" name="title"><br>
+        　作者：<input type="text" class="form-control" name="Author"><br>
+        　<input type="submit" value="查詢">
+        </form>
+    </div>
+  </section>
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row">
+        {% for x in onepagelist %}  
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm ">
+            {% if x.smallThumbnail != "" %}  
+            <div class="bd-placeholder-img card-img-top container" width="100%" height="225" style="overflow:hidden">
+              <div width="100%" height="100%" style="overflow:hidden">
+              <img src="{{x.smallThumbnail}}" x="50%" y="50%"  alt="" title="{{x.title}}" class="img-responsive center">
+            </div>
+            </div>
+            {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" 
+            preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#55595c"></rect>
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em">查無此圖</text></svg>
+            {% endif %}
+            <div class="card-body">
+              <p>書名:{{x.title}} {{x.subtitle}}</p>
+              <p>作者:{{x.Author}}</p>
+              <p>出版社:{{x.publisher}} </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <form method="GET" action="remove_book">{% csrf_token %}
+                    <input type="text" name="ISBN" value="{{x.ISBN}}" style="display:None"/> 
+                    <input type="submit"  value="移除"  class="btn btn-sm btn-outline-secondary" /></input>
+                  </form>
+
+                </div>
+                <small class="text-muted" formmethod='get'>{{x.publishedDate}}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="text-muted">
+  <div class="container">
+    <p class="float-right">
+      <a href="#">Back to top</a>
+    </p>
+    <p>Album example is © Bootstrap, but please download and customize it for yourself!</p>
+    <p>New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our <a href="/docs/4.5/getting-started/introduction/">getting started guide</a>.</p>
+  </div>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<script>
+  function removefun(ISBN) {
+    document.getElementById("demo").style.color = "red";
+  }
+  </script>
+</body>
+</html>
